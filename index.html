@@ -200,7 +200,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
   <h2>Know what you're getting into</h2>
   <div class="safety">
     <div class="tile red"><h3>This is not Yaesu firmware</h3><p>Yaesu doesn't make, approve or support this build, and there is no warranty of any kind. Loading the wrong file or losing power during an update can wipe your settings or leave the radio unusable. Every mod here has been tested on the author's own radio, but that is no guarantee for yours.</p></div>
-    <div class="tile"><h3>Wider TX means legal responsibility</h3><p>This build lets the radio transmit on HF 1.8–30 MHz with no gaps, on 136–174 MHz, and up to 470 MHz. Transmitting is only legal where your licence allows it. The FTX-1 holds no certification for commercial, public-safety, marine, aviation, GMRS, FRS or MURS use. Spurious emissions and output power outside the factory ham bands haven't been measured. Using those frequencies is entirely on you.</p></div>
+    <div class="tile"><h3>Wider TX means legal responsibility</h3><p>This build lets the radio transmit on HF 1.8–30 MHz with no gaps, on 136–174 MHz, and up to 470 MHz. Transmitting is only legal where your licence allows it. The FTX-1 holds no certification for commercial, public-safety, marine, aviation, CB, GMRS, FRS or MURS use. Spurious emissions and output power outside the factory ham bands haven't been measured. Using those frequencies is entirely on you.</p></div>
     <div class="tile teal"><h3>Back up first</h3><p>Save your memory channels and menu settings with the method in the FTX-1 manual. Put your untouched Yaesu SFL files somewhere safe, because they are your only way back to stock.</p></div>
   </div>
 </div></section>
@@ -295,14 +295,13 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
   <div class="two">
     <div class="box credit"><div class="avatar">SQ9PD</div><div>
       <h3>SQ9PD: the foundation</h3>
-      <p>SQ9PD wrote the FTX-1 interface modification this build is based on: the soft-key pages, clock, MEM DISPLAY, SWR SCAN, shortcuts, APRS actions and his firmware fixes. He also worked out the SFL container and checksum, which this workshop's file handling follows. His work is included here with his permission. Many thanks to him.</p>
+      <p>SQ9PD wrote the FTX-1 interface modification this build is based on: the soft-key pages, clock, MEM DISPLAY, SWR SCAN, shortcuts, APRS actions and his firmware fixes. Many thanks to him.</p>
       <p>Website and official patcher: <a href="https://ftx-1-mod.sq9pd.pl/" rel="noopener noreferrer">ftx-1-mod.sq9pd.pl</a><br>Source code: <a href="https://github.com/sq9pd/Yaesu-FTX-1-mod" rel="noopener noreferrer">github.com/sq9pd/Yaesu-FTX-1-mod</a></p>
       <p>If you want only his features, without the wider TX and the other additions here, use his patcher.</p>
     </div></div>
     <div class="box credit"><div class="avatar me">WG3U</div><div>
       <h3>WG3U: extended build &amp; this workshop</h3>
       <p><b>Author: WG3U.</b> WG3U made the transmit, audio, AM and scope changes listed in the catalog (everything not tagged SQ9PD) and this page. Please send problems with those changes to WG3U, not SQ9PD.</p>
-      <p id="creditSplit"></p>
     </div></div>
   </div>
   <p class="lede" style="margin-top:18px;font-size:.88rem">Yaesu and FTX-1 are trademarks of Yaesu Musen Co., Ltd. This page contains no Yaesu firmware. You provide your own files, and the page holds only the bytes that change.</p>
@@ -497,7 +496,6 @@ const st = {MAIN: stats(PATCH_MAIN), DISPLAY: stats(PATCH_DISPLAY)};
 $('#lcdBuild').textContent = PATCH_MAIN.outSha256.slice(0, 8).toUpperCase() + ' / ' + PATCH_DISPLAY.outSha256.slice(0, 8).toUpperCase();
 $('#lcdMain').textContent = n(st.MAIN.total) + ' + ' + n(st.MAIN.ins) + ' added';
 $('#lcdDisp').textContent = n(st.DISPLAY.total);
-$('#creditSplit').textContent = `Who changed what, by byte. MAIN: ${n(st.MAIN.sq)} bytes by SQ9PD plus his ${n(st.MAIN.ins)}-byte added code block, and ${n(st.MAIN.ours)} bytes by WG3U. DISPLAY: ${n(st.DISPLAY.sq)} bytes by SQ9PD and ${n(st.DISPLAY.ours)} by WG3U. Each changed range in the embedded patch data is tagged with its author.`;
 const tb = $('#techTable tbody');
 for (const k of ['MAIN', 'DISPLAY']) {
   const p = PATCHES[k], s = st[k];
