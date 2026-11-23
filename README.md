@@ -4,7 +4,7 @@
 
 **Author: WG3U**
 
-A single-page, browser-only patcher for the Yaesu FTX-1 field head. You load your own original Yaesu **MAIN 01-13** and **DISPLAY 01-10** firmware files. The page checks them, applies the WG3U extended build, and gives you a ZIP ready to copy to the radio's microSD card.
+A single-page, browser-only patcher for the Yaesu FTX-1 field head. You load your own original Yaesu **MAIN 01-13** and **DISPLAY 01-10** firmware files. The page checks them, applies the WG3U extended build, and gives you the two finished `.SFL` files to copy into the `FTX-1` folder on the radio's microSD card. A ZIP bundle with a README is offered as an option.
 
 ## Credit: SQ9PD
 

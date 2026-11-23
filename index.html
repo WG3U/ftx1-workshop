@@ -121,7 +121,12 @@ button[disabled]{opacity:.35;cursor:not-allowed}
 button.h{all:unset;cursor:pointer;font:600 12px var(--mono);color:#ffd27a;border-bottom:1px dotted #ffd27a}
 button.h:hover{color:#fff}
 .out{padding:14px;border-top:1px solid #1f4a42;background:#081915}
-.out .zipbtn{display:inline-flex;align-items:center;gap:8px}
+.dlgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.filebtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;font:700 .92rem var(--mono);text-align:left;border-radius:10px}
+.filebtn small{font:500 .74rem var(--sans);opacity:.8}
+.ziplink{all:unset;cursor:pointer;color:#ffd27a;border-bottom:1px dotted #ffd27a;font:600 .86rem var(--mono)}
+.ziplink[disabled]{opacity:.35;cursor:not-allowed}
+@media (max-width:560px){.dlgrid{grid-template-columns:1fr}}
 .out .alt{margin-top:10px;font-size:.86rem;color:#7fb5ab}
 .out .alt a{color:#ffd27a;margin-right:14px}
 .out .alt a[aria-disabled=true]{pointer-events:none;opacity:.35}
@@ -208,7 +213,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
 <section class="band alt" id="workshop"><div class="shell">
   <div class="kicker">The workshop</div>
   <h2>Drop your files and press build</h2>
-  <p class="lede">Drop both Yaesu files in at once, in any order. The bench works out which is which from their SHA-256 fingerprints. It then builds the pair and hands you one ZIP, laid out ready to copy to the radio's microSD card.</p>
+  <p class="lede">Drop both Yaesu files in at once, in any order. The bench works out which is which from their SHA-256 fingerprints. It then builds the pair and gives you the two finished <code>.SFL</code> files, named exactly as the radio expects, ready to copy to the microSD card.</p>
   <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>NETWORK OFF</span></div>
   <div class="bench3">
     <div class="intake">
@@ -232,9 +237,12 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
       <div class="bar"><span>● BENCH LOG</span><em id="clock">--:--:--</em></div>
       <pre id="log"></pre>
       <div class="out">
-        <button class="zipbtn" id="zipBtn" disabled>⬇ Download SD-card ZIP</button>
-        <div class="tree">FTX-1-WG3U.zip<br>├─ FTX-1/FTX-1_MAIN_V0113.SFL<br>├─ FTX-1/FTX-1_DISPLAY_V0110.SFL<br>└─ README.txt</div>
-        <div class="alt">Or save files one at a time: <a href="#" id="one-MAIN" aria-disabled="true">MAIN only</a><a href="#" id="one-DISPLAY" aria-disabled="true">DISPLAY only</a></div>
+        <div class="dlgrid">
+          <button class="filebtn" id="one-MAIN" disabled><span>⬇ FTX-1_MAIN_V0113.SFL</span><small>MAIN · 4,521,658 bytes</small></button>
+          <button class="filebtn" id="one-DISPLAY" disabled><span>⬇ FTX-1_DISPLAY_V0110.SFL</span><small>DISPLAY · 2,896,380 bytes</small></button>
+        </div>
+        <div class="tree">Copy both files directly into the <b>FTX-1</b> folder on the radio-formatted microSD card.</div>
+        <div class="alt">Prefer a bundle? <button class="ziplink" id="zipBtn" disabled>FTX-1-WG3U.zip</button> holds both files in an FTX-1 folder plus a README with the hashes.</div>
       </div>
     </div>
   </div>
@@ -311,7 +319,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
   <div class="two">
     <div class="box"><h3>Flashing the result</h3><ul class="timeline">
       <li>Load <b>both</b> new files, MAIN and DISPLAY. They are built to work as a pair.</li>
-      <li>Use the procedure in Yaesu's FTX-1 Firmware Upgrade Manual: format the microSD card in the radio, copy the files, then run the update from the menu.</li>
+      <li>Use the procedure in Yaesu's FTX-1 Firmware Upgrade Manual: format the microSD card in the radio, copy both .SFL files directly into its FTX-1 folder, then run the update from the menu.</li>
       <li>Keep power steady until the update finishes.</li>
       <li>Yaesu calls for a reset after any update, so have your backup ready to reload.</li>
     </ul></div>
@@ -590,7 +598,7 @@ function refresh() {
   $('#buildBtn').disabled = busy || !(have && pf === 3) || (built === have);
   $('#buildBtn').textContent = have === 1 && !built ? 'Build my firmware (1 of 2 files)' : 'Build my firmware';
   $('#zipBtn').disabled = !built;
-  for (const k of ['MAIN', 'DISPLAY']) $('#one-' + k).setAttribute('aria-disabled', results[k] ? 'false' : 'true');
+  for (const k of ['MAIN', 'DISPLAY']) $('#one-' + k).disabled = !results[k];
 }
 let busy = false;
 
@@ -617,7 +625,7 @@ $('#buildBtn').addEventListener('click', async () => {
     } catch (e) { results[k] = null; log(`${k}: build stopped. ${escH(e.message)}`, 'err'); }
   }
   const built = ['MAIN', 'DISPLAY'].filter(k => results[k]);
-  if (built.length === 2) log('Both files built and verified. The SD-card ZIP is ready.', 'ok');
+  if (built.length === 2) log('Both files built and verified. Download them with the two buttons below.', 'ok');
   else if (built.length === 1) log(`${built[0]} is ready. Add the other original file to build the full pair. The radio needs both.`, 'warn');
   busy = false; refresh();
 });
@@ -671,10 +679,10 @@ $('#zipBtn').addEventListener('click', () => {
   log(`ZIP saved: FTX-1-WG3U.zip (${ents.length - 1} firmware file${ents.length === 2 ? '' : 's'} + README.txt)`, 'ok');
 });
 for (const k of ['MAIN', 'DISPLAY']) $('#one-' + k).addEventListener('click', ev => {
-  ev.preventDefault(); const r = results[k];
+  const r = results[k];
   if (!r || r.sha256 !== PATCHES[k].outSha256) return;
   save(new Blob([r.bytes], {type: 'application/octet-stream'}), PATCHES[k].filename);
-  log(`saved ${PATCHES[k].filename} on its own`, 'dim');
+  log(`saved ${PATCHES[k].filename}`, 'ok');
 });
 refresh();
 })();
