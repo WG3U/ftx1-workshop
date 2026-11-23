@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src https://abacus.jasoncameron.dev; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
 <title>WG3U FTX-1 Firmware Workshop</title>
 <style>
@@ -184,7 +184,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
     <span class="call">WG3U · FTX-1</span>
     <h1>WG3U FTX-1 <span>Firmware Workshop</span></h1>
     <p>Turn your own copy of Yaesu's FTX-1 MAIN and DISPLAY firmware into WG3U's extended build. It adds wider transmit coverage, AM and audio upgrades, and a better scope and waterfall, on top of SQ9PD's interface modification.</p>
-    <p>All the work runs on your computer, in this one page. Your firmware is never sent anywhere.</p>
+    <p>All the work runs on your computer, in this one page. Your firmware never leaves your computer. The only thing the page sends is an anonymous +1 to a build counter.</p>
     <div class="meta">Author: WG3U &nbsp;·&nbsp; Builds on SQ9PD's work, credited below</div>
     <div class="jump"><a class="primary" href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
   </div>
@@ -194,7 +194,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
       <li><span>Base firmware</span><span>MAIN 01-13 · DISPLAY 01-10</span></li>
       <li><span>MAIN bytes changed</span><span id="lcdMain">—</span></li>
       <li><span>DISPLAY bytes changed</span><span id="lcdDisp">—</span></li>
-      <li><span>Network access</span><span>blocked by policy</span></li>
+      <li><span>Sent online</span><span>anonymous build count only</span></li>
       <li><span>Output check</span><span>exact SHA-256 match</span></li>
     </ul>
   </div>
@@ -214,7 +214,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
   <div class="kicker">The workshop</div>
   <h2>Drop your files and press build</h2>
   <p class="lede">Drop both Yaesu files in at once, in any order. The bench works out which is which from their SHA-256 fingerprints. It then builds the pair and gives you the two finished <code>.SFL</code> files, named exactly as the radio expects, ready to copy to the microSD card.</p>
-  <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>NETWORK OFF</span></div>
+  <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>FIRMWARE STAYS LOCAL</span></div>
   <div class="bench3">
     <div class="intake">
       <div class="zone" id="zone">
@@ -335,7 +335,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
 <section class="band alt" id="tech"><div class="shell">
   <div class="kicker">Under the hood</div>
   <h2>How the patch is checked</h2>
-  <details class="mod" style="margin-bottom:14px"><summary><b>Processing pipeline</b><span class="badge b-legal">details</span><span class="where">click to expand</span></summary><div class="more">The page first confirms the file size and SHA-256, then validates the SFL header and tag CRC. It decodes the payload, which uses a 43-byte additive key. Each original byte is compared with the expected value before its replacement is written. For MAIN, the affected S-record lines are rebuilt with fresh checksums and SQ9PD's extra flash block is added. The payload is then re-encoded, the tag CRC (CRC-32 extended over a 4-byte salt) and length field are recalculated, and the result must match the reference build's SHA-256 exactly. The download button stays disabled until it does.</div></details>
+  <details class="mod" style="margin-bottom:14px"><summary><b>Processing pipeline</b><span class="badge b-legal">details</span><span class="where">click to expand</span></summary><div class="more">The page first confirms the file size and SHA-256, then validates the SFL header and tag CRC. It decodes the payload, which uses a 43-byte additive key. Each original byte is compared with the expected value before its replacement is written. For MAIN, the affected S-record lines are rebuilt with fresh checksums and SQ9PD's extra flash block is added. The payload is then re-encoded, the tag CRC (CRC-32 extended over a 4-byte salt) and length field are recalculated, and the result must match the reference build's SHA-256 exactly. The download button stays disabled until it does. After a verified build, and only then, the page sends one plain GET request to <code>abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/main</code> (or <code>/display</code>) to add 1 to an anonymous counter. The request carries no body, no query string, no cookies and no referrer. Like any web request, it reveals your IP address to that service. If it is blocked or fails, the patcher works exactly the same. The security policy allows no other host.</div></details>
   <table class="spec" id="techTable"><thead><tr><th>Module</th><th>Changes</th><th>Original SHA-256</th><th>Result SHA-256 · tag CRC</th></tr></thead><tbody></tbody></table>
 </div></section>
 
@@ -532,7 +532,7 @@ logEl.addEventListener('click', async e => {
   const ok = await copyText(b.dataset.full);
   log(ok ? `copied ${b.dataset.full}` : `copy blocked by the browser. Full hash: ${b.dataset.full}`, ok ? 'dim' : 'warn');
 });
-log('WG3U FTX-1 bench ready. Network is disabled by this page\'s security policy.', 'dim');
+log('WG3U FTX-1 bench ready. Your firmware stays on this computer. After each verified build the page sends one anonymous count to abacus.jasoncameron.dev, with no file data, hashes or names. All other network access is blocked.', 'dim');
 log('Waiting for firmware files…', 'dim');
 
 /* ---------- intake ---------- */
@@ -602,6 +602,17 @@ function refresh() {
 }
 let busy = false;
 
+/* ---------- anonymous build counter ----------
+   One GET per successful, hash-verified build: +1 to /hit/wg3u-ftx1-workshop/main or /display.
+   No body, no query string, no cookies, no referrer, no file data. Failures are ignored. */
+const COUNTER_BASE = 'https://abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/';
+function countBuild(k) {
+  try {
+    fetch(COUNTER_BASE + k.toLowerCase(), {method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer', keepalive: true})
+      .then(() => log(`${k}: anonymous build count sent`, 'dim'), () => {});
+  } catch (e) { /* counting is optional */ }
+}
+
 /* ---------- build ---------- */
 $('#buildBtn').addEventListener('click', async () => {
   if (busy) return; busy = true; refresh();
@@ -622,6 +633,7 @@ $('#buildBtn').addEventListener('click', async () => {
       log(`${k}: re-encoded, length ${n(r.bytes.length)} and tag CRC ${r.crc} written to the header`);
       log(`${k}: output sha256 ${hchip(r.sha256)} <span class="ok">✓ matches the WG3U reference</span> (${Math.round(performance.now() - t0)} ms)`, 'ok');
       results[k] = r;
+      countBuild(k);
     } catch (e) { results[k] = null; log(`${k}: build stopped. ${escH(e.message)}`, 'err'); }
   }
   const built = ['MAIN', 'DISPLAY'].filter(k => results[k]);

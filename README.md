@@ -17,7 +17,8 @@ WG3U's additions are the extended TX ranges, 10 W on the internal battery, the 5
 
 ## Privacy and what this repo contains
 
-- Everything runs in your browser. Your files are never uploaded, and the page's Content-Security-Policy blocks all network requests. There are no analytics and no external libraries.
+- Everything runs in your browser. Your firmware files never leave your computer. There are no analytics, no cookies and no external libraries.
+- **Anonymous build counter:** after a build passes its SHA-256 check, and only then, the page sends one bare GET to `https://abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/main` (or `/display`) to add 1 to a public counter. It carries no file data, hashes, filenames, cookies or referrer. Like any web request, it exposes your IP address to that service. If the request is blocked or fails, the patcher works the same. The Content-Security-Policy allows that one host and blocks every other network request.
 - This repository does **not** host any Yaesu firmware, original or patched. The page carries only the changed bytes (each with the original value it expects) plus SQ9PD's own added code block, compressed. You must supply Yaesu's files yourself.
 - The output is accepted only if its SHA-256 exactly matches the reference build below. Otherwise the download stays disabled.
 
