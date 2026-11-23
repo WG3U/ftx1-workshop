@@ -95,6 +95,9 @@ button[disabled]{opacity:.35;cursor:not-allowed}
 .leds .lit i{background:var(--green);box-shadow:0 0 8px var(--green)}
 .leds .warnlit i{background:var(--amber);box-shadow:0 0 8px var(--amber)}
 .leds .lit{color:var(--ink)}
+.leds .countled i{background:var(--teal);box-shadow:0 0 8px var(--teal)}
+.leds .countled b{color:var(--teal)}
+[hidden]{display:none!important}
 .intake{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:16px}
 .zone{border:2px dashed #3d5a85;border-radius:12px;padding:26px 16px;text-align:center;background:repeating-linear-gradient(135deg,rgba(255,255,255,.015) 0 12px,transparent 12px 24px);transition:.15s}
 .zone.over{border-color:var(--amber);background:rgba(242,169,59,.08)}
@@ -184,7 +187,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
     <span class="call">WG3U · FTX-1</span>
     <h1>WG3U FTX-1 <span>Firmware Workshop</span></h1>
     <p>Turn your own copy of Yaesu's FTX-1 MAIN and DISPLAY firmware into WG3U's extended build. It adds wider transmit coverage, AM and audio upgrades, and a better scope and waterfall, on top of SQ9PD's interface modification.</p>
-    <p>All the work runs on your computer, in this one page. Your firmware never leaves your computer. The only thing the page sends is an anonymous +1 to a build counter.</p>
+    <p>All the work runs on your computer, in this one page. Your firmware never leaves your computer. The page only talks to an anonymous build counter: it reads the running totals and adds 1 after each verified build.</p>
     <div class="meta">Author: WG3U &nbsp;·&nbsp; Builds on SQ9PD's work, credited below</div>
     <div class="jump"><a class="primary" href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
   </div>
@@ -195,6 +198,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
       <li><span>MAIN bytes changed</span><span id="lcdMain">—</span></li>
       <li><span>DISPLAY bytes changed</span><span id="lcdDisp">—</span></li>
       <li><span>Sent online</span><span>anonymous build count only</span></li>
+      <li id="heroCount" hidden><span>Builds so far</span><span class="cv"></span></li>
       <li><span>Output check</span><span>exact SHA-256 match</span></li>
     </ul>
   </div>
@@ -214,7 +218,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
   <div class="kicker">The workshop</div>
   <h2>Drop your files and press build</h2>
   <p class="lede">Drop both Yaesu files in at once, in any order. The bench works out which is which from their SHA-256 fingerprints. It then builds the pair and gives you the two finished <code>.SFL</code> files, named exactly as the radio expects, ready to copy to the microSD card.</p>
-  <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>FIRMWARE STAYS LOCAL</span></div>
+  <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>FIRMWARE STAYS LOCAL</span><span data-l="count" id="buildCount" class="lit countled" hidden><i></i>BUILDS <b class="v"></b></span></div>
   <div class="bench3">
     <div class="intake">
       <div class="zone" id="zone">
@@ -334,7 +338,7 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
 <section class="band alt" id="tech"><div class="shell">
   <div class="kicker">Under the hood</div>
   <h2>How the patch is checked</h2>
-  <details class="mod" style="margin-bottom:14px"><summary><b>Processing pipeline</b><span class="badge b-legal">details</span><span class="where">click to expand</span></summary><div class="more">The page first confirms the file size and SHA-256, then validates the SFL header and tag CRC. It decodes the payload, which uses a 43-byte additive key. Each original byte is compared with the expected value before its replacement is written. For MAIN, the affected S-record lines are rebuilt with fresh checksums and SQ9PD's extra flash block is added. The payload is then re-encoded, the tag CRC (CRC-32 extended over a 4-byte salt) and length field are recalculated, and the result must match the reference build's SHA-256 exactly. The download button stays disabled until it does. After a verified build, and only then, the page sends one plain GET request to <code>abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/main</code> (or <code>/display</code>) to add 1 to an anonymous counter. The request carries no body, no query string, no cookies and no referrer. Like any web request, it reveals your IP address to that service. If it is blocked or fails, the patcher works exactly the same. The security policy allows no other host.</div></details>
+  <details class="mod" style="margin-bottom:14px"><summary><b>Processing pipeline</b><span class="badge b-legal">details</span><span class="where">click to expand</span></summary><div class="more">The page first confirms the file size and SHA-256, then validates the SFL header and tag CRC. It decodes the payload, which uses a 43-byte additive key. Each original byte is compared with the expected value before its replacement is written. For MAIN, the affected S-record lines are rebuilt with fresh checksums and SQ9PD's extra flash block is added. The payload is then re-encoded, the tag CRC (CRC-32 extended over a 4-byte salt) and length field are recalculated, and the result must match the reference build's SHA-256 exactly. The download button stays disabled until it does. When the page loads, it reads the current anonymous build totals from <code>abacus.jasoncameron.dev</code> (<code>/get/wg3u-ftx1-workshop/main</code> and <code>/display</code>) to show the BUILDS readout. After a verified build, and only then, it sends one plain GET request to <code>abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/main</code> (or <code>/display</code>) to add 1. These requests carry no firmware data, hashes, filenames, body, query string, cookies or referrer. Like any web request, it reveals your IP address to that service. If the counter is blocked or down, the readout just stays hidden and the patcher works exactly the same. The Content-Security-Policy blocks every other network request.</div></details>
   <table class="spec" id="techTable"><thead><tr><th>Module</th><th>Changes</th><th>Original SHA-256</th><th>Result SHA-256 · tag CRC</th></tr></thead><tbody></tbody></table>
 </div></section>
 
@@ -531,7 +535,7 @@ logEl.addEventListener('click', async e => {
   const ok = await copyText(b.dataset.full);
   log(ok ? `copied ${b.dataset.full}` : `copy blocked by the browser. Full hash: ${b.dataset.full}`, ok ? 'dim' : 'warn');
 });
-log('WG3U FTX-1 bench ready. Your firmware stays on this computer. After each verified build the page sends one anonymous count to abacus.jasoncameron.dev, with no file data, hashes or names. All other network access is blocked.', 'dim');
+log('WG3U FTX-1 bench ready. Your firmware stays on this computer. On load the page reads the anonymous build totals from abacus.jasoncameron.dev, and after each verified build it sends one anonymous GET there. No firmware data, hashes, filenames, cookies or referrer are sent. The Content-Security-Policy blocks all other network access.', 'dim');
 log('Waiting for firmware files…', 'dim');
 
 /* ---------- intake ---------- */
@@ -604,13 +608,43 @@ let busy = false;
 /* ---------- anonymous build counter ----------
    One GET per successful, hash-verified build: +1 to /hit/wg3u-ftx1-workshop/main or /display.
    No body, no query string, no cookies, no referrer, no file data. Failures are ignored. */
-const COUNTER_BASE = 'https://abacus.jasoncameron.dev/hit/wg3u-ftx1-workshop/';
+const COUNTER_HOST = 'https://abacus.jasoncameron.dev', COUNTER_NS = 'wg3u-ftx1-workshop';
+const COUNTER_OPTS = {method: 'GET', mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer', cache: 'no-store'};
+const counts = {MAIN: null, DISPLAY: null};
+async function counterValue(path) {           // -> non-negative integer or null; never throws
+  try {
+    const r = await fetch(COUNTER_HOST + path, COUNTER_OPTS);
+    if (!r.ok) return null;
+    const j = await r.json();
+    return (j && Number.isFinite(j.value) && j.value >= 0) ? j.value : null;
+  } catch (e) { return null; }
+}
+function renderCounts() {
+  const parts = ['MAIN', 'DISPLAY'].filter(k => counts[k] !== null).map(k => `${n(counts[k])} ${k}`);
+  const txt = parts.join(' · ');
+  const led = $('#buildCount'), hero = $('#heroCount');
+  if (led) { led.hidden = !parts.length; $('.v', led).textContent = txt; }
+  if (hero) { hero.hidden = !parts.length; $('.cv', hero).textContent = txt; }
+}
+async function loadCount(k) {
+  const m = k.toLowerCase();
+  let v = await counterValue(`/get/${COUNTER_NS}/${m}`);
+  if (v === null) v = await counterValue(`/info/${COUNTER_NS}/${m}`);   // /get/ is sometimes flaky; /info/ is read-only too
+  counts[k] = v; renderCounts();
+}
 function countBuild(k) {
   try {
-    fetch(COUNTER_BASE + k.toLowerCase(), {method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer', keepalive: true})
-      .then(() => log(`${k}: anonymous build count sent`, 'dim'), () => {});
+    fetch(`${COUNTER_HOST}/hit/${COUNTER_NS}/${k.toLowerCase()}`, {...COUNTER_OPTS, keepalive: true})
+      .then(async r => {
+        let v = null;
+        if (r.ok) { try { const j = await r.json(); if (j && Number.isFinite(j.value) && j.value >= 0) v = j.value; } catch (e) {} }
+        if (v !== null) counts[k] = v; else if (counts[k] !== null) counts[k] += 1;
+        renderCounts();
+        log(`${k}: anonymous build count sent`, 'dim');
+      }, () => {});
   } catch (e) { /* counting is optional */ }
 }
+loadCount('MAIN'); loadCount('DISPLAY');
 
 /* ---------- build ---------- */
 $('#buildBtn').addEventListener('click', async () => {
