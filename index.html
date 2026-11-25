@@ -40,15 +40,19 @@ code,.hash{font-family:var(--mono);font-size:.8rem}
 .jump{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
 .jump a{font:600 .85rem var(--sans);text-decoration:none;padding:8px 14px;border-radius:999px;border:1px solid var(--edge);color:var(--ink);background:rgba(255,255,255,.03)}
 .jump a.primary{background:var(--amber);color:var(--navy);border-color:var(--amber)}
-.donate{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:700 1.15rem/1.2 var(--sans);text-decoration:none;padding:14px 28px;border-radius:999px;border:1px solid #008cff;color:#fff;background:#008cff;box-shadow:0 6px 22px rgba(0,140,255,.35);transition:transform .15s,box-shadow .15s,background .15s}
+.donate{display:inline-flex;align-items:center;justify-content:center;gap:10px;font:700 1.15rem/1.2 var(--sans);text-decoration:none;padding:14px 28px;border-radius:999px;border:1px solid #008cff;color:#fff;background:#008cff;box-shadow:0 6px 22px rgba(0,140,255,.35);transition:transform .15s,box-shadow .15s,background .15s;width:100%;box-sizing:border-box}
 .donate:hover,.donate:focus-visible{background:#1a9bff;transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,140,255,.5)}
 .donate:focus-visible{outline:2px solid var(--amber2);outline-offset:3px}
 .donate svg{flex:none;width:22px;height:22px;fill:#fff}
 .donate small{font:600 .95rem var(--mono);opacity:.9}
+.donate.paypal{border-color:#ffc439;color:#003087;background:#ffc439;box-shadow:0 6px 22px rgba(0,48,135,.22)}
+.donate.paypal:hover,.donate.paypal:focus-visible{background:#ffd156;box-shadow:0 8px 28px rgba(0,48,135,.3)}
+.donate.paypal svg{fill:#003087}
 .donatebar{background:linear-gradient(180deg,rgba(0,140,255,.14),rgba(60,198,180,.06));border-top:3px solid #008cff;border-bottom:1px solid rgba(0,140,255,.45)}
 .donatebar .shell{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:22px 22px 18px}
+.donate-buttons{display:flex;flex-direction:column;align-items:stretch;gap:10px;width:100%;max-width:560px}
 .donatebar .disclaimer{margin:0;max-width:780px;font-size:.95rem;line-height:1.55;color:var(--ink);opacity:.82}
-@media (max-width:600px){.donate{font-size:1.05rem;padding:13px 20px;border-radius:18px;width:100%;text-align:left}.donate small{font-size:.85rem}.donatebar .disclaimer{font-size:.9rem}}
+@media (max-width:600px){.donate{font-size:1.05rem;padding:13px 20px;border-radius:18px;text-align:left}.donate small{font-size:.85rem}.donatebar .disclaimer{font-size:.9rem}}
 
 /* bands */
 .band{padding:40px 0}
@@ -257,7 +261,10 @@ article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
 <body>
 
 <div class="donatebar" id="donate"><div class="shell">
+  <div class="donate-buttons">
   <a class="donate" href="https://venmo.com/u/Shorebillyfarmer" target="_blank" rel="noopener noreferrer" title="Opens Venmo in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>Support development - Donate via Venmo <small>(@Shorebillyfarmer)</small></span></a>
+  <a class="donate paypal" href="https://paypal.me/WG3U" target="_blank" rel="noopener" title="Opens PayPal in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span>Donate with PayPal</span></a>
+  </div>
   <p class="disclaimer">Donations are welcome but never expected or required. All donations go directly toward further firmware development for the Yaesu FTX-1, as well as future work on the FT-710, FTDX10, and possibly the FTDX101 series.</p>
 </div></div>
 
