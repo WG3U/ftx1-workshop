@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src https://abacus.jasoncameron.dev; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src https://abacus.jasoncameron.dev; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
 <title>WG3U FTX-1 Firmware Workshop</title>
 <style>
@@ -183,6 +183,44 @@ table.spec th,table.spec td{padding:8px;border-bottom:1px solid var(--edge);text
 table.spec th{color:var(--mute);font-weight:600}
 footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px solid var(--edge)}
 @media (max-width:860px){.hero .shell,.safety,.bench,.two{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.stepper li::after{display:none}.hero h1{font-size:2rem}}
+
+/* How to load firmware: standout expandable under the workshop heading */
+details.load-guide{margin:8px 0 22px;background:var(--panel);border:2px solid var(--amber);border-radius:14px;box-shadow:0 0 0 4px rgba(242,169,59,.16);overflow:hidden}
+details.load-guide>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 16px;min-height:56px;font:700 1.12rem/1.2 var(--display);letter-spacing:.04em;color:var(--navy);background:var(--amber);user-select:none}
+details.load-guide>summary::-webkit-details-marker{display:none}
+details.load-guide>summary .lg-ico{flex:0 0 34px;width:34px;height:34px;border-radius:8px;background:var(--navy);color:var(--amber);display:grid;place-items:center}
+details.load-guide>summary .lg-ico svg{display:block}
+details.load-guide>summary .lg-title{flex:1 1 auto}
+details.load-guide>summary .lg-hint{font:600 .74rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--navy);opacity:.7}
+details.load-guide>summary .lg-chev{margin-left:auto;width:10px;height:10px;border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg);transition:transform .15s;translate:0 -3px}
+details.load-guide[open]>summary .lg-chev{transform:rotate(225deg);translate:0 2px}
+details.load-guide[open]>summary{border-bottom:1px solid rgba(14,26,43,.15)}
+.load-guide-body{padding:18px 18px 22px;color:var(--ink)}
+.load-guide-body h3{font:600 1.15rem var(--display);letter-spacing:.03em;margin:22px 0 8px;color:var(--amber2)}
+.load-guide-body h3:first-child{margin-top:0}
+.load-guide-body p,.load-guide-body li{color:var(--mute)}
+.load-guide-body p{margin:0 0 10px}
+.load-guide-body ol,.load-guide-body ul{margin:0 0 12px;padding-left:22px}
+.load-guide-body li{margin:0 0 8px}
+.load-guide-body code{color:var(--teal)}
+.load-guide-body pre{background:var(--navy);border:1px solid var(--edge);border-radius:10px;padding:12px 14px;overflow-x:auto;color:var(--teal);font:12.5px/1.55 var(--mono);margin:0 0 14px}
+.load-guide-body .lg-warn{background:rgba(255,107,94,.1);border:1px solid rgba(255,107,94,.55);border-left:4px solid var(--red);border-radius:10px;padding:12px 14px;margin:0 0 16px}
+.load-guide-body .lg-warn p{color:var(--ink);margin:0}
+.load-guide-body .lg-warn strong{color:var(--red)}
+.load-guide-body .lg-note{background:rgba(242,169,59,.08);border:1px solid rgba(242,169,59,.4);border-radius:10px;padding:12px 14px;margin:0 0 16px}
+.load-guide-body figure{margin:12px 0 18px;padding:0}
+.load-guide-body figure img{display:block;width:100%;max-width:640px;height:auto;border-radius:10px;border:1px solid var(--edge);background:#fff}
+.load-guide-body figcaption{margin-top:6px;font-size:.85rem;color:var(--mute)}
+.load-guide-body .lg-tree{background:var(--navy);border:1px solid var(--edge);border-radius:10px;padding:14px 16px;font:13px/1.55 var(--mono);color:var(--mute);margin:0 0 14px;overflow-x:auto}
+.load-guide-body .lg-tree b{color:var(--teal)}
+.load-guide-body .lg-src{font-size:.9rem}
+.load-guide-body .lg-src a{color:var(--amber2)}
+@media (max-width:860px){
+  details.load-guide>summary{font-size:1.02rem;padding:12px 14px}
+  .load-guide-body{padding:14px 14px 18px}
+  .load-guide-body figure img{max-width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -222,6 +260,173 @@ footer{padding:26px 0 40px;color:var(--mute);font-size:.84rem;border-top:1px sol
 <section class="band alt" id="workshop"><div class="shell">
   <div class="kicker">The workshop</div>
   <h2>Drop your files and press build</h2>
+
+  <details class="load-guide" id="how-to-load">
+    <summary>
+      <span class="lg-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M3 10h5"/></svg></span>
+      <span class="lg-title">How to load firmware</span>
+      <span class="lg-hint">Step-by-step with pictures</span>
+      <span class="lg-chev" aria-hidden="true"></span>
+    </summary>
+    <div class="load-guide-body">
+      <div class="lg-warn">
+        <p><strong>Do not interrupt the update.</strong> Remove the SBR-52LI battery and run the radio from an external power supply. Back up memories and menu settings first; the reset at the end clears them. Do not remove the microSD card or turn the radio off while the update is running. If it is interrupted, the radio will not operate properly, and Yaesu's Firmware Upgrade Manual does not describe a recovery procedure. See the disaster recovery section at the bottom if the DISPLAY update leaves a black, frozen or looping screen.</p>
+      </div>
+
+      <h3>You'll need</h3>
+      <ul>
+        <li>An external DC power supply. For a Field-head update, remove the SBR-52LI battery first.</li>
+        <li>A microSD or microSDHC card Yaesu has tested: 2 GB, or 4, 8, 16 or 32 GB, formatted in this radio.</li>
+        <li>The two custom files, named exactly <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code> (upper case).</li>
+        <li>Copies of the stock MAIN and DISPLAY files, kept somewhere other than this card, for rollback.</li>
+        <li>A computer to check the SHA-256 hashes and copy the files onto the card.</li>
+      </ul>
+
+      <h3>Prepare the card and files</h3>
+      <p>Format the card in the radio before you copy anything onto it. Formatting erases the card. The custom MAIN and DISPLAY files depend on each other, so copy both into the same <code>FTX-1</code> folder and flash them together.</p>
+      <ol>
+        <li><b>Back up memories and menu settings.</b> Press and hold [FUNC], then choose EXTENSION SETTING → SD CARD. Touch DONE for each data item you want to save. The Operating Manual shows “Saving memory data” and “Save setting menu data.” To keep a new file, touch NEW, enter a name of up to 15 characters, then ENT. FILE SAVED appears when it is done; touch the screen, then press [BACK] until you return to normal operation.</li>
+        <li><b>Format the microSD card in this radio.</b> Use a card already formatted here if you have one. Otherwise: press and hold [FUNC], choose EXTENSION SETTING → SD CARD, then touch DONE on FORMAT. Touch OK to initialize, or CANCEL to stop. When FORMAT COMPLETED appears, touch the screen, then press [BACK] until you return to normal operation. Cards formatted on another device may not work until you format them in the FTX-1.</li>
+        <li><b>Check the SHA-256 hashes.</b> Compare each file with the values in README or SHA256SUMS before you copy it. On Windows, run the commands below in the folder that holds the files.</li>
+        <li><b>Copy both files into the FTX-1 folder.</b> Put <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code> directly under <code>FTX-1</code>. Do not put them in Capture, MemList, Menu, PlayList or QSOLog. If they are anywhere else, the radio will not recognize them.</li>
+      </ol>
+      <pre>certutil -hashfile FTX-1_MAIN_V0113.SFL SHA256
+certutil -hashfile FTX-1_DISPLAY_V0110.SFL SHA256</pre>
+      <div class="lg-tree" role="img" aria-label="microSD card folder layout">
+        microSD card<br>
+        └── <b>FTX-1</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── Capture<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── MemList<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── Menu<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── PlayList<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── QSOLog<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <b>FTX-1_MAIN_V0113.SFL</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;└── <b>FTX-1_DISPLAY_V0110.SFL</b><br>
+        <span style="color:var(--amber2)">Copy both files into the FTX-1 folder, not a subfolder.</span>
+      </div>
+
+      <h3>Load the firmware</h3>
+      <p>These steps follow the Firmware Upgrade Manual when MAIN is already later than V01.00, which it is on the current custom builds (they are based on V01.13). That is the manual's step 11 onward. If MAIN is still V01.00, use the bootloader steps in the next section first.</p>
+      <ol>
+        <li><b>Turn the transceiver off.</b> The manual starts the update with the radio off.</li>
+        <li><b>Remove the battery and connect external power.</b> For a Field-head update: remove the SBR-52LI, then connect an external power source. If you are also updating an FTX-1 Optima or SPA-1, connect the Field head to the SPA-1, then connect external power.</li>
+        <li><b>Insert the microSD card.</b> With the radio still off, insert the card into the slot with the contact face on the front, until you hear a click. The Operating Manual says to insert and remove it firmly so it does not pop out.</li>
+        <li><b>Turn the transceiver on.</b> This is the manual's step 11, used when MAIN is not V01.00.</li>
+        <li><b>Press and hold the [FUNC] knob.</b> This opens the setting menu.</li>
+        <li><b>Touch EXTENSION SETTING.</b> If you do not see it, touch FWD → to bring it up, then touch it.</li>
+        <li><b>Open the firmware list.</b> Touch SD CARD, then touch DONE on the FIRMWARE UPDATE item.</li>
+        <li><b>Mark DISPLAY and MAIN only.</b> A check mark means that file will be updated. Ready means the file is on the card and can be updated; the manual also says Ready appears when the version already matches and an update is not necessary. These custom files keep the stock names, so Ready may appear even though you still need to load them. Touch an empty box to mark it. Mark DISPLAY and MAIN, and leave DSP, SDR and OPT unmarked unless you are installing official Yaesu files for those. Then touch UPDATE. Touch CANCEL if you need to stop.</li>
+        <li><b>Touch OK on the UPDATE? screen.</b> The confirmation screen is headed CAUTION and asks UPDATE? Touch CANCEL to stop instead.</li>
+        <li><b>Wait until the radio restarts itself.</b> A progress indicator appears when the transfer begins. Wait until it finishes. Do not remove the card or turn the radio off. When the update is complete, the power turns off and then on by itself. The manual does not say how long this takes.</li>
+        <li><b>Reset the transceiver.</b> For a Field-head-only update, this is the last required step in the manual. Turn the radio off. Then turn it on while holding [BACK] and [FINE/FAST] at the same time. The frequencies should return to 144.000.000 on the SUB side and 7.000.000 on the MAIN side. This reset clears memories and menu settings.</li>
+      </ol>
+      <figure>
+        <img src="guide/sd-insert.png" alt="Rear of the FTX-1 Field head, with a microSD card going into the slot and the contact face labeled" width="490" height="430" loading="lazy">
+        <figcaption>Step 3. Insert the card with the contact face as shown. Firmware Upgrade Manual, p. 4.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/func-knob.png" alt="Front of the FTX-1 with a hand pointing at the FUNC knob" width="733" height="290" loading="lazy">
+        <figcaption>Step 5. Press and hold the FUNC knob. Firmware Upgrade Manual, p. 2.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/extension-setting.png" alt="FTX-1 function menu, with a hand pointing at the EXTENSION SETTING key" width="729" height="511" loading="lazy">
+        <figcaption>Step 6. Touch EXTENSION SETTING. Firmware Upgrade Manual, p. 2.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/sd-card-menu.png" alt="EXTENSION SETTING SD CARD menu, with hands pointing at SD CARD and at DONE next to FIRMWARE UPDATE" width="729" height="420" loading="lazy">
+        <figcaption>Step 7. Touch SD CARD, then DONE on FIRMWARE UPDATE. This screen also has FORMAT, MENU SAVE and MENU LOAD. Firmware Upgrade Manual, p. 6.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/fw-list.png" alt="YAESU FTX-1 FIRMWARE UPDATE list with all five items marked Ready and checked" width="760" height="430" loading="lazy">
+        <figcaption>Step 8. The manual's figure shows all five files marked. For this custom build, mark only DISPLAY and MAIN. Firmware Upgrade Manual, p. 6.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/touch-update.png" alt="Firmware update list with a hand pointing at the UPDATE button" width="729" height="482" loading="lazy">
+        <figcaption>Step 8, continued. Touch UPDATE. Firmware Upgrade Manual, p. 6.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/update-confirm.png" alt="CAUTION screen asking UPDATE, with a hand pointing at OK" width="730" height="485" loading="lazy">
+        <figcaption>Step 9. Touch OK. Firmware Upgrade Manual, p. 7.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/reset-keys.png" alt="Front of the FTX-1 with hands pointing at the power button, BACK, and FINE/FAST" width="785" height="343" loading="lazy">
+        <figcaption>Step 11. Power on while holding BACK and FINE/FAST. Firmware Upgrade Manual, p. 9.</figcaption>
+      </figure>
+      <p>If you are also updating an SPA-1, the manual has a second pass after this Field-head reset (its steps 20–30): hold [FUNC], open SD CARD → FIRMWARE UPDATE, mark only OPT, then UPDATE, OK, wait for the restart, and reset again. This custom build does not include an OPT file.</p>
+
+      <h3>If MAIN is still V01.00</h3>
+      <p>Skip this section unless SOFT VERSION shows MAIN as V01.00. In that case the manual says not to skip these bootloader steps, then continue from “Press and hold the [FUNC] knob” in the section above (its step 12).</p>
+      <ol>
+        <li><b>Power on while holding three keys.</b> With the card already inserted and external power connected, press [QMB], [VM MW] and [M►V MT] at the same time, then turn the radio on. The FIRMWARE UPDATE screen appears.</li>
+        <li><b>Do not touch the screen.</b> The screen says to touch it to continue. The manual says not to. Go on to the next step.</li>
+        <li><b>Turn the [FUNC] knob clockwise five clicks or more.</b> The YAESU BOOT LOADER Vxx-xx screen appears.</li>
+        <li><b>Mark DISPLAY only, then touch UPDATE.</b> Do not mark MAIN, DSP or SDR. Wait for the progress indicator to finish. Do not remove the card or turn the radio off.</li>
+        <li><b>Reconnect power, then continue the normal update.</b> When this part is complete, the power turns off by itself. Unplug the DC power cord, then plug it back in. The radio turns on by itself. Then go to “Press and hold the [FUNC] knob” above and finish the MAIN update, the reset, and the version check.</li>
+      </ol>
+      <figure>
+        <img src="guide/bootloader-keys.png" alt="Front of the FTX-1 with hands pointing at QMB, the VM key, the M to V key, and the power button" width="791" height="375" loading="lazy">
+        <figcaption>Hold QMB, VM and M►V, then power on. Firmware Upgrade Manual, p. 4.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/bootloader-prompt.png" alt="FIRMWARE UPDATE screen telling you to insert the latest firmware SD card and touch the screen, with a notice not to touch the screen" width="717" height="412" loading="lazy">
+        <figcaption>Do not touch this screen; turn the FUNC knob five clicks or more instead. Firmware Upgrade Manual, p. 4.</figcaption>
+      </figure>
+      <figure>
+        <img src="guide/bootloader-display.png" alt="YAESU BOOT LOADER list with only DISPLAY checked, and a note not to mark the other boxes" width="1065" height="490" loading="lazy">
+        <figcaption>Mark DISPLAY only, then touch UPDATE. Firmware Upgrade Manual, p. 5.</figcaption>
+      </figure>
+
+      <h3>Confirm the version</h3>
+      <p>The Firmware Upgrade Manual checks the installed versions this way, both before an update and after.</p>
+      <ol>
+        <li>Press and hold the [FUNC] knob.</li>
+        <li>Touch EXTENSION SETTING. If it is not on the first page, touch FWD →, then touch it.</li>
+        <li>Touch SOFT VERSION. Each firmware version appears on the TFT. OPT appears only when the Field head is connected to an SPA-1. After this custom update, DISPLAY should read V01-10 and MAIN should read V01-13. The custom files keep those stock version numbers, so this screen cannot tell custom firmware from stock.</li>
+      </ol>
+      <figure>
+        <img src="guide/soft-version.png" alt="EXTENSION SETTING SOFT VERSION screen listing DISPLAY, MAIN, DSP, SDR and DST, with OPT noted as visible only when an SPA-1 is connected" width="1132" height="470" loading="lazy">
+        <figcaption>SOFT VERSION. The version numbers in the manual's figure are masked. Firmware Upgrade Manual, p. 2.</figcaption>
+      </figure>
+      <p>To put your memories and menu settings back after the reset, the Operating Manual's “Reading Memory and Set Menu data” steps are: press the [FUNC] knob, choose EXTENSION SETTING → SD CARD, touch DONE on the data item to be read, touch the file name, then OK on the overwrite confirmation. FILE LOADED appears when it is done; touch the screen. The radio then turns off and back on. The manual notes that with some OEM cards the screen may stay blank until you remove the card.</p>
+
+      <h3>If something goes wrong</h3>
+      <ul>
+        <li><b>(No such file)</b> means that item is not in the <code>FTX-1</code> folder, or the file name does not match. Check that both files sit directly under <code>FTX-1</code> and are named exactly <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code>.</li>
+        <li><b>(Broken file)</b> means the file is corrupt. The manual says to download the firmware again from Yaesu and start over. For these custom files, copy the checksummed files again, confirm the SHA-256 values, and start over.</li>
+        <li>If the radio never lists the files, they are probably in a subfolder such as Capture or Menu, or the card was not formatted in this radio.</li>
+        <li>If you formatted the card after copying the files, the files were erased. Format first, then copy them again.</li>
+        <li>If the update is interrupted, the manual says the radio will not operate properly and does not give a recovery procedure. If the DISPLAY firmware may be corrupted, use the disaster recovery section below.</li>
+        <li>After a successful reset, memories and menu settings are cleared. Load the backup from the card as described above.</li>
+      </ul>
+      <p>To roll back to stock, flash the stock <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code> files the same way, together. Before you go back to v7 or to stock from a v8 or later build that added extra dial steps, first set SSB/CW DIAL STEP to 5, 10 or 20 Hz, MAIN STEPS PER REV to 50, 100 or 200, and FINE/FAST KEY to NORMAL. Older firmware misreads the new settings.</p>
+
+      <h3 id="disaster-recovery">Disaster recovery: corrupted DISPLAY firmware</h3>
+      <p>Use this section if a DISPLAY load is interrupted or fails and the radio is left with a black or frozen screen, or it boot-loops.</p>
+      <div class="lg-note">
+        <p><b>No verified user recovery method is documented for a dead FTX-1 display.</b> Yaesu does not describe how to recover a black, frozen or looping screen, and it does not document a USB or serial programmer for this radio. Do not invent or try undocumented key combinations. A third-party guide that uses different keys than Yaesu's manual should be ignored.</p>
+      </div>
+      <p><b>What Yaesu documents.</b> The FTX-1 Series Firmware Upgrade Manual (2511-C) says not to remove the microSD card or turn the radio off while updating, and that if the update is interrupted the transceiver will not operate properly. It does not then give a recovery procedure. If you need help, it says to consult a Yaesu sales site or service center. Yaesu USA is listed in that same manual at 6125 Phyllis Drive, Cypress, CA 90630. Firmware is loaded from a microSD card. The only power-on key combination Yaesu documents for a firmware update is: while holding [QMB], [VM] and [M►V], turn the radio on. The FIRMWARE UPDATE screen should appear; do not touch it; turn [FUNC] clockwise five clicks or more to reach the YAESU BOOT LOADER, then mark DISPLAY only and touch UPDATE. The manual presents that path only when MAIN is V01.00, as the first DISPLAY update, not as a general recovery method for a later radio or a blank screen. Yaesu also says a (Broken file) status means the file on the card is corrupt, and that you should obtain the firmware again and start over. The Operating Manual (p. 64) says to format the card in the radio; cards formatted on other devices may not work until they are formatted in the FTX-1.</p>
+      <p><b>What SQ9PD documents.</b> SQ9PD's FTX-1 modification notes warn that an error or interrupted update may cause loss of settings, malfunction, or render the radio inoperable, and that you should follow Yaesu's FTX-1 firmware update instructions. His patcher “prepares files; it does not program or repair the radio.” To return to stock he says to install the original unmodified MAIN and DISPLAY following Yaesu's instructions, then do a factory reset.</p>
+      <p><b>Related model, for context only — not an FTX-1 procedure.</b> The FT-710 Firmware Upgrade Manual (2211-A) says that if an update is interrupted, follow the instructions on the screen and start again from step 1. The FTX-1 manual does not include that sentence.</p>
+      <p><b>If the radio still shows a screen, these are the documented safe steps:</b></p>
+      <ol>
+        <li>Leave it on external power with the SBR-52LI battery removed.</li>
+        <li>If you can still use the menus, format a microSD card in the FTX-1, copy the stock <code>FTX-1_DISPLAY_V0110.SFL</code> (and MAIN if you were also loading it) directly into the <code>FTX-1</code> folder, check the SHA-256 hashes, and retry the menu update. Mark DISPLAY only, unless you also need to reload MAIN.</li>
+        <li>If the FIRMWARE UPDATE or YAESU BOOT LOADER screen still appears, follow the documented DISPLAY-only bootloader steps with that stock DISPLAY file. Yaesu documents that key combination only for MAIN V01.00; it is included here because it is the only documented way to reach the bootloader, not because a recovery for later MAIN versions or a blank screen has been verified.</li>
+        <li>If the radio cannot format a card, Yaesu does not document formatting it on a computer. As a last attempt only, some operators format a card as FAT32 on a computer, create an <code>FTX-1</code> folder, and copy the stock files there, knowing Yaesu warns that cards formatted elsewhere may not be recognized. Then try the bootloader or menu update again if a screen is available.</li>
+        <li>If the screen stays black or the radio boot-loops and the bootloader never appears, stop and contact a Yaesu sales site or service center. There is no verified user recovery method for that case.</li>
+      </ol>
+      <p class="lg-src"><b>Sources.</b>
+        <a href="https://yaesu.com/Files/BB2B47AE-1018-01AF-FAE48FDCB1919193/Firmware_Ver_Up_Manual_ENG_FTX-1_2511-C.pdf">FTX-1 Series Firmware Upgrade Manual, 2511-C</a>;
+        <a href="https://www.yaesu.com/Files/BB2B47AE-1018-01AF-FAE48FDCB1919193/FTX-1_Firmware_Update_Information%20202608_EN.pdf">FTX-1 Firmware Update Information, 28 August 2026</a>;
+        FTX-1 Operating Manual, pp. 64–65;
+        <a href="https://ftx-1-mod.sq9pd.pl/">SQ9PD FTX-1 modification site</a>
+        and <a href="https://github.com/sq9pd/Yaesu-FTX-1-mod">github.com/sq9pd/Yaesu-FTX-1-mod</a>;
+        <a href="https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/Firmware_Ver_Up_Manual_ENG_FT-710_2211-A.pdf">FT-710 Firmware Upgrade Manual, 2211-A</a> (related model only).
+        Searches of public FTX-1 forum and groups.io discussions did not turn up a verified DISPLAY-brick recovery procedure.
+      </p>
+    </div>
+  </details>
   <p class="lede">Drop both Yaesu files in at once, in any order. The bench works out which is which from their SHA-256 fingerprints. It then builds the pair and gives you the two finished <code>.SFL</code> files, named exactly as the radio expects, ready to copy to the microSD card.</p>
   <div class="leds" id="leds"><span data-l="files"><i></i>FILES <b class="v">0/2</b></span><span data-l="pre"><i></i>PRE-FLIGHT <b class="v">0/3</b></span><span data-l="build"><i></i>BUILD <b class="v">idle</b></span><span data-l="net" class="lit"><i></i>FIRMWARE STAYS LOCAL</span><span data-l="count" id="buildCount" class="lit countled" hidden><i></i>BUILDS <b class="v"></b></span></div>
   <div class="bench3">
@@ -735,6 +940,20 @@ for (const k of ['MAIN', 'DISPLAY']) $('#one-' + k).addEventListener('click', ev
   log(`saved ${PATCHES[k].filename}`, 'ok');
 });
 refresh();
+})();
+</script>
+
+<script>
+/* Open the load-firmware guide when a deep link points inside it. */
+(function () {
+  var box = document.getElementById('how-to-load');
+  if (!box) return;
+  var hash = location.hash;
+  if (!hash) return;
+  var target = hash === '#how-to-load' ? box : document.querySelector(hash);
+  if (!target || !box.contains(target) && target !== box) return;
+  box.open = true;
+  requestAnimationFrame(function () { target.scrollIntoView({block: 'start'}); });
 })();
 </script>
 </body>
