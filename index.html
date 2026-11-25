@@ -221,6 +221,12 @@ details.load-guide[open]>summary{border-bottom:1px solid rgba(14,26,43,.15)}
   .load-guide-body figure img{max-width:100%}
 }
 
+
+article.mod .more img{display:block;width:100%;max-width:800px;height:auto;border-radius:8px;margin:10px 0 4px;border:1px solid var(--edge);background:#000}
+article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
+
+.cards.wide{grid-template-columns:1fr;max-width:820px}
+
 </style>
 </head>
 <body>
@@ -469,7 +475,7 @@ certutil -hashfile FTX-1_DISPLAY_V0110.SFL SHA256</pre>
   <h2>Everything this build changes</h2>
   <p class="lede">Every mod below is included. They are applied together as one build so the result can be checked against a known-good reference file.</p>
   <div class="filters" id="filters">
-    <button class="sel" data-f="all">All</button><button data-f="tx">Transmit</button><button data-f="audio">Audio &amp; EQ</button><button data-f="am">AM</button><button data-f="scope">Scope &amp; waterfall</button><button data-f="sq">SQ9PD features</button>
+    <button class="sel" data-f="all">All</button><button data-f="tx">Transmit</button><button data-f="audio">Audio &amp; EQ</button><button data-f="am">AM</button><button data-f="scope">Scope &amp; waterfall</button><button data-f="cw">CW</button><button data-f="swr">SWR SCAN</button><button data-f="dial">Dial &amp; keys</button><button data-f="sq">SQ9PD features</button>
   </div>
 
   <div class="cat" data-cat="tx"><h3><i>📡</i>Transmit</h3><div class="cards">
@@ -497,14 +503,40 @@ certutil -hashfile FTX-1_DISPLAY_V0110.SFL SHA256</pre>
     <article class="mod"><div class="mh"><b>AF-FFT keeps running on transmit</b><span class="badge b-ok">tested on air</span><span class="where">DISPLAY · AF-FFT</span></div><div class="more">The audio spectrum and its waterfall keep drawing while you transmit instead of going blank.</div></article>
     <article class="mod"><div class="mh"><b>Gray passband tracks WIDTH</b><span class="badge b-ok">tested on air</span><span class="where">DISPLAY · filter scope</span></div><div class="more">The gray shading on the filter scope follows your actual receive WIDTH. Stock always draws it 3 kHz wide.</div></article>
     <article class="mod"><div class="mh"><b>D-MODE long press on any key</b><span class="badge b-ok">tested on air</span><span class="where">MAIN · button handler fix</span></div><div class="more">A fix to SQ9PD's button pages (his GitHub issue #2). Long-pressing D-MODE in FIX mode only worked when D-MODE was on its original key. Now it works on whichever key and page D-MODE is assigned to.</div></article>
+    <article class="mod"><div class="mh"><b>D-TRACE averaging and power-on restore</b><span class="badge b-ok">tested on air</span><span class="where">DISPLAY + MAIN · D-TRACE</span></div><div class="more">Averaging can be set to OFF, 2, 4, 8, 16 or 32. Your D-TRACE settings are restored at power-on: MAIN puts them in the start-up handshake frame, and the DISPLAY reads them back. Tapping the CW decoder pane no longer opens the oscilloscope pop-up.</div></article>
   </div></div>
 
+  <div class="cat" data-cat="cw"><h3><i>✏️</i>CW</h3><div class="cards wide">
+    <article class="mod"><div class="mh"><b>On-screen CW decoder v3.5</b><span class="badge b-ok">tested on air</span><span class="where">DISPLAY · scope audio</span></div><div class="more">It copies Morse from the scope's audio data with a Goertzel tone filter, and it tracks the sending speed from the dit length. At the start of a transmission it holds the first marks and spaces, seeds the speed from their distribution, then plays them back so it locks on faster. On the synthetic test set the character error rate dropped from 18.3% to 4.3%, and from 21.0% to 4.9% at 28–45 WPM. The first characters of a transmission print after a short pause while it locks; in rare cases the first element can be mis-read.</div></article>
+  </div></div>
+
+  <div class="cat" data-cat="swr"><h3><i>📈</i>SWR SCAN</h3>
+    <p class="notes">SWR SCAN transmits at the selected scan power in AM. Use a dummy load or a known antenna. Do not scan on 60 m.</p>
+    <div class="cards wide">
+    <article class="mod"><div class="mh"><b>SWR SCAN with band sweeps and a shaded plot</b><span class="badge b-ok">tested on air</span><span class="where">DISPLAY + MAIN · function menu or soft key</span></div><div class="more">
+      <p>Builds on SQ9PD's SWR SCAN window. The sweep is faster: each point is read after 8 meter updates instead of 16, and the trace is smoothed with a [1, 2, 1] average so it stays clean. Spans still cycle 50 kHz, 100 kHz, 500 kHz and 1 MHz, and BAND now scans the whole US band the VFO is in. 10 m is split into 28–29 and 29–29.6 MHz; 60 m has no band scan (ERRM). The PWR key sets scan power to 0.5, 1, 2 or 5 W (default 1 W). On an SPA-1 the scan stays at 0.5 W.</p>
+      <p>SWR SCAN is no longer grayed out when the internal tuner is on. START switches the tuner to THRU, waits for it to report THRU plus 300 ms, runs the scan, then turns the tuner back on. It stays grayed only while a tune is actually in progress, and it shows ERRT if THRU is not confirmed within 2 s. If power is lost during a THRU scan, turn the tuner back on by hand.</p>
+      <p>After a scan, STOP becomes GO MIN and jumps the VFO to the lowest SWR. The screen marks that MIN point, draws the 1.5:1 edges in cyan and the 2:1 edges in orange, and the knob drives a cursor with a frequency and SWR readout. The previous scan stays in gray for comparison, lined up by frequency. The area under the current trace is filled with light yellow and the area under the previous trace with light gray (olive where they overlap). Named error codes explain each refused START (including ERRC if CLAR is on). A leftover clarifier offset that used to block START is fixed.</p>
+      <figure>
+        <img src="guide/swr-current-plus-previous.png" alt="SWR SCAN plot with a yellow current trace, a gray previous trace, yellow and gray fills, MIN marker, 1.5:1 and 2:1 edges, and a cursor readout of 7.1500 1.13" width="800" height="230" loading="lazy">
+        <figcaption>Current scan in yellow with a light yellow fill, previous scan in gray, olive where they overlap. MIN, 1.5:1 and 2:1 edges, and the cursor readout.</figcaption>
+      </figure>
+    </div></article>
+    </div></div>
+
+  <div class="cat" data-cat="dial"><h3><i>🎛️</i>Dial &amp; keys</h3>
+    <p class="notes">Before you go back to v7 or to stock firmware, set SSB/CW DIAL STEP to 5, 10 or 20 Hz, MAIN STEPS PER REV to 50, 100 or 200, and FINE/FAST KEY to NORMAL. Older firmware misreads the new settings.</p>
+    <div class="cards">
+    <article class="mod"><div class="mh"><b>SSB/CW Dial Step up to 1 kHz</b><span class="badge b-ok">tested on air</span><span class="where">MAIN · KEY/DIAL → SSB/CW DIAL STEP</span></div><div class="more">The list is now 5, 10, 20, 50, 100, 250, 500 Hz and 1 kHz. The default is still 20 Hz, and 5/10/20 behave as before. The step is used for the main dial in LSB, USB, CW-U and CW-L, and for the clarifier in those modes. FAST still multiplies by 10, so 1 kHz becomes 10 kHz, and FINE stays at 1 Hz. RTTY, PSK, DATA, FM, AM and channel steps are unchanged.</div></article>
+    <article class="mod"><div class="mh"><b>Main Steps Per Rev: 400 and 800</b><span class="badge b-ok">tested on air</span><span class="where">MAIN · KEY/DIAL → MAIN STEPS PER REV</span></div><div class="more">The encoder already gives 200 counts per turn, and 200 already moves one tuning step per count, so 400 and 800 cannot be finer. They move two steps per count (400) or four (800): twice or four times as much frequency per turn, always on the dial-step grid. At a 20 Hz step that is 4 kHz, 8 kHz or 16 kHz per turn. 50, 100 and 200 are unchanged.</div></article>
+    <article class="mod"><div class="mh"><b>FINE/FAST KEY: NORMAL or INVERT</b><span class="badge b-ok">tested on air</span><span class="where">MAIN · KEY/DIAL item 16</span></div><div class="more">A new item at the end of the KEY/DIAL menu, after MIC MUTE MODE. NORMAL is stock: a short press toggles FINE (1 Hz) and a hold toggles FAST (×10). INVERT swaps them, so a short press toggles FAST and a hold toggles FINE. Each function keeps its own beep. The setting survives power-off. ALL RESET puts it back to NORMAL.</div></article>
+    </div></div>
+
   <div class="cat" data-cat="sq"><h3><i>⭐</i>SQ9PD features <span class="badge b-sq">by SQ9PD</span></h3>
-    <p class="notes">These come from SQ9PD's interface modification and are included with his permission. This is a short summary. His site has the full documentation, including the SWR SCAN operating limits and error codes. <b>SWR SCAN transmits, so read his instructions before you use it.</b></p>
+    <p class="notes">These come from SQ9PD's interface modification and are included with his permission. This is a short summary. His site has the full documentation.</p>
     <div class="cards">
     <article class="mod"><div class="mh"><b>Twenty assignable soft keys</b><span class="badge b-sq">SQ9PD</span><span class="where">DISPLAY + MAIN</span></div><div class="more">Four pages of keys under the waterfall, set up in DISPLAY SETTING → BUTTON SETUP. There are 70 functions to choose from, and each key shows the function's current value.</div></article>
     <article class="mod"><div class="mh"><b>Status-bar clock and MEM DISPLAY</b><span class="badge b-sq">SQ9PD</span><span class="where">DISPLAY SETTING → MISC</span></div><div class="more">A clock in the top bar with a 12- or 24-hour choice. A memory-name mode that shows the channel name large and the frequency small.</div></article>
-    <article class="mod"><div class="mh"><b>SWR SCAN antenna sweep</b><span class="badge b-sq">SQ9PD</span><span class="where">function menu or soft key</span></div><div class="more">Draws an SWR curve across 50 kHz to 1 MHz around the VFO, transmitting at low power in AM. It has strict preconditions and safeguards, all documented on SQ9PD's site.</div></article>
     <article class="mod"><div class="mh"><b>Faster key shortcuts and extras</b><span class="badge b-sq">SQ9PD</span><span class="where">front panel</span></div><div class="more">Short and long presses on BAND/MAG, MODE/N/W and FUNC, APRS actions from the new-packet popup, and memory scrolling that wraps around. He also fixed two Yaesu bugs: beeps at BEEP LEVEL 0 and the "AGC SLOW DELY" label.</div></article>
     </div></div>
 
@@ -522,7 +554,7 @@ certutil -hashfile FTX-1_DISPLAY_V0110.SFL SHA256</pre>
     </div></div>
     <div class="box credit"><div class="avatar me">WG3U</div><div>
       <h3>WG3U: extended build &amp; this workshop</h3>
-      <p><b>Author: WG3U.</b> WG3U made the transmit, audio, AM and scope changes listed in the catalog (everything not tagged SQ9PD) and this page. Please send problems with those changes to WG3U, not SQ9PD.</p>
+      <p><b>Author: WG3U.</b> WG3U made the transmit, audio, AM, scope, CW, SWR SCAN and dial changes listed in the catalog (everything not tagged SQ9PD) and this page. Please send problems with those changes to WG3U, not SQ9PD.</p>
     </div></div>
   </div>
   <p class="lede" style="margin-top:18px;font-size:.88rem">Yaesu and FTX-1 are trademarks of Yaesu Musen Co., Ltd. This page contains no Yaesu firmware. You provide your own files, and the page holds only the bytes that change.</p>
