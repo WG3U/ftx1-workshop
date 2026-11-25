@@ -225,6 +225,22 @@ details.load-guide[open]>summary{border-bottom:1px solid rgba(14,26,43,.15)}
 article.mod .more img{display:block;width:100%;max-width:800px;height:auto;border-radius:8px;margin:10px 0 4px;border:1px solid var(--edge);background:#000}
 article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
 
+.fw-dl{margin:0 0 36px;background:rgba(242,169,59,.08);border:1px solid rgba(242,169,59,.5);border-radius:14px;padding:20px 22px 18px}
+.fw-dl .fw-date{font:600 .85rem var(--mono);color:var(--amber2);margin:0 0 10px}
+.fw-dl .lede{margin:0 0 16px;max-width:none}
+.fw-dl .dlgrid{margin:0 0 14px}
+.fw-dl a.filebtn{text-decoration:none;background:var(--amber);color:var(--navy);border:1px solid var(--amber);cursor:pointer}
+.fw-dl a.filebtn:hover{filter:brightness(1.06)}
+.fw-dl .hashes{margin:0 0 14px}
+.fw-dl .fw-more{margin:0 0 12px;font-size:.88rem;color:var(--mute)}
+.fw-dl .fw-more a{color:var(--amber2)}
+.fw-dl .fw-notes{margin:0;padding-left:18px;color:var(--mute);font-size:.92rem}
+.fw-dl .fw-notes li{margin:0 0 6px}
+.fw-dl .fw-notes a{color:var(--amber2)}
+.fw-dl .fw-risk{margin:14px 0 0;background:rgba(255,107,94,.1);border:1px solid rgba(255,107,94,.45);border-left:4px solid var(--red);border-radius:10px;padding:10px 14px;color:var(--ink);font-size:.92rem}
+.fw-dl .fw-risk strong{color:var(--red)}
+
+
 .cards.wide{grid-template-columns:1fr;max-width:820px}
 
 </style>
@@ -238,7 +254,7 @@ article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
     <p>Turn your own copy of Yaesu's FTX-1 MAIN and DISPLAY firmware into WG3U's extended build. It adds wider transmit coverage, AM and audio upgrades, and a better scope and waterfall, on top of SQ9PD's interface modification.</p>
     <p>All the work runs on your computer, in this one page. Your firmware never leaves your computer. The page only talks to an anonymous build counter: it reads the running totals and adds 1 after each verified build.</p>
     <div class="meta">Author: WG3U &nbsp;·&nbsp; Builds on SQ9PD's work, credited below</div>
-    <div class="jump"><a class="primary" href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
+    <div class="jump"><a class="primary" href="#download-v8">Download latest firmware (v8)</a><a href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
   </div>
   <div class="dial" aria-label="Build summary">
     <div class="lcd">TARGET BUILD<b id="lcdBuild">—</b></div>
@@ -265,6 +281,28 @@ article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
 
 <section class="band alt" id="workshop"><div class="shell">
   <div class="kicker">The workshop</div>
+
+  <div class="fw-dl" id="download-v8">
+    <h2>Download latest firmware (v8)</h2>
+    <p class="fw-date">25 November 2026</p>
+    <p class="lede">D-TRACE averaging (restored at power-on), CW decoder v3.5, improved SWR SCAN, SSB/CW dial steps to 1 kHz, 400 and 800 steps per rev, and FINE/FAST KEY invert, plus the earlier transmit, audio, AM, scope and SQ9PD changes in this build.</p>
+    <div class="dlgrid">
+      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v8-2026-11-25/FTX-1_MAIN_V0113.SFL"><span>⬇ FTX-1_MAIN_V0113.SFL</span><small>MAIN · 4,551,116 bytes</small></a>
+      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v8-2026-11-25/FTX-1_DISPLAY_V0110.SFL"><span>⬇ FTX-1_DISPLAY_V0110.SFL</span><small>DISPLAY · 2,930,384 bytes</small></a>
+    </div>
+    <div class="hashes">
+      <div><span class="k">MAIN SHA-256</span><span class="hash">78521ea2e45d02462b2e769282985d119957e41c751f2c5e9f667e3661412739</span></div>
+      <div><span class="k">DISPLAY SHA-256</span><span class="hash">b0ddec36f002a9d86d7971716c850ff5ae93bbb9f5778f444a35d5e583c94e39</span></div>
+    </div>
+    <p class="fw-more">Also on the release: <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v8-2026-11-25/SHA256SUMS">SHA256SUMS</a> and <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v8-2026-11-25/README.md">README.md</a>.</p>
+    <ul class="fw-notes">
+      <li>Flash MAIN and DISPLAY together.</li>
+      <li>Keep the exact file names <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code>.</li>
+      <li>See <a href="#how-to-load">How to load firmware</a> for the step-by-step with pictures.</li>
+      <li>Before you go back to v7 or to stock firmware, set SSB/CW DIAL STEP to 5, 10 or 20 Hz, MAIN STEPS PER REV to 50, 100 or 200, and FINE/FAST KEY to NORMAL. Older firmware misreads the new settings.</li>
+    </ul>
+    <p class="fw-risk"><strong>Experimental, use at your own risk.</strong> This is custom firmware, not a Yaesu release.</p>
+  </div>
   <h2>Drop your files and press build</h2>
 
   <details class="load-guide" id="how-to-load">
