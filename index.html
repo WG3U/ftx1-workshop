@@ -254,7 +254,7 @@ article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
     <p>Turn your own copy of Yaesu's FTX-1 MAIN and DISPLAY firmware into WG3U's extended build. It adds wider transmit coverage, AM and audio upgrades, and a better scope and waterfall, on top of SQ9PD's interface modification.</p>
     <p>All the work runs on your computer, in this one page. Your firmware never leaves your computer. The page only talks to an anonymous build counter: it reads the running totals and adds 1 after each verified build.</p>
     <div class="meta">Author: WG3U &nbsp;·&nbsp; Builds on SQ9PD's work, credited below</div>
-    <div class="jump"><a class="primary" href="#download-v9">Download latest firmware (v9)</a><a href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
+    <div class="jump"><a class="primary" href="#download-v10">Download latest firmware (v10)</a><a href="#workshop">Open the workshop</a><a href="#catalog">Browse the mods</a><a href="#safety">Read the risks</a><a href="#undo">Going back to stock</a></div>
   </div>
   <div class="dial" aria-label="Build summary">
     <div class="lcd">TARGET BUILD<b id="lcdBuild">—</b></div>
@@ -282,27 +282,27 @@ article.mod .more figcaption{font-size:.8rem;color:var(--mute)}
 <section class="band alt" id="workshop"><div class="shell">
   <div class="kicker">The workshop</div>
 
-  <div class="fw-dl" id="download-v9">
-    <h2>Download latest firmware (v9)</h2>
+  <div class="fw-dl" id="download-v10">
+    <h2>Download latest firmware (v10)</h2>
     <p class="fw-date">25 November 2026</p>
-    <p class="lede">v9 adds TX 28-75 MHz on US units, plus D-TRACE averaging (restored at power-on), CW decoder v3.5, improved SWR SCAN, SSB/CW dial steps to 1 kHz, 400 and 800 steps per rev, and FINE/FAST KEY invert, and the earlier transmit, audio, AM, scope and SQ9PD changes in this build.</p>
+    <p class="lede">v10 makes TX 28-75 MHz work on MARS-unlocked US radios too (tested on air), plus D-TRACE averaging (restored at power-on), CW decoder v3.5, improved SWR SCAN, SSB/CW dial steps to 1 kHz, 400 and 800 steps per rev, and FINE/FAST KEY invert, and the earlier transmit, audio, AM, scope and SQ9PD changes in this build.</p>
     <div class="dlgrid">
-      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v9-2026-11-25/FTX-1_MAIN_V0113.SFL"><span>⬇ FTX-1_MAIN_V0113.SFL</span><small>MAIN · 4,551,116 bytes</small></a>
-      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v9-2026-11-25/FTX-1_DISPLAY_V0110.SFL"><span>⬇ FTX-1_DISPLAY_V0110.SFL</span><small>DISPLAY · 2,930,384 bytes</small></a>
+      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v10-2026-11-25/FTX-1_MAIN_V0113.SFL"><span>⬇ FTX-1_MAIN_V0113.SFL</span><small>MAIN · 4,551,116 bytes</small></a>
+      <a class="filebtn" href="https://github.com/WG3U/ftx1-workshop/releases/download/v10-2026-11-25/FTX-1_DISPLAY_V0110.SFL"><span>⬇ FTX-1_DISPLAY_V0110.SFL</span><small>DISPLAY · 2,930,384 bytes</small></a>
     </div>
     <div class="hashes">
-      <div><span class="k">MAIN SHA-256</span><span class="hash">9e2235b9656ae73f6a20dd097efebf13aab2c6eda019dceb8d83804a028bff75</span></div>
+      <div><span class="k">MAIN SHA-256</span><span class="hash">6703c9f8daf00bf8a90e53f2fd02d38e4afa44435a67184f0483417caab2041f</span></div>
       <div><span class="k">DISPLAY SHA-256</span><span class="hash">b0ddec36f002a9d86d7971716c850ff5ae93bbb9f5778f444a35d5e583c94e39</span></div>
     </div>
-    <p class="fw-more">Also on the release: <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v9-2026-11-25/SHA256SUMS">SHA256SUMS</a> and <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v9-2026-11-25/README.md">README.md</a>. v8 is still available if you want this build without the transmit expansion: <a href="https://github.com/WG3U/ftx1-workshop/releases/tag/v8-2026-11-25">firmware v8</a>.</p>
+    <p class="fw-more">Also on the release: <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v10-2026-11-25/SHA256SUMS">SHA256SUMS</a> and <a href="https://github.com/WG3U/ftx1-workshop/releases/download/v10-2026-11-25/README.md">README.md</a>. Older releases: <a href="https://github.com/WG3U/ftx1-workshop/releases/tag/v9-2026-11-25">firmware v9</a> (older; its TX 28-75 MHz did not work on MARS-unlocked radios) and <a href="https://github.com/WG3U/ftx1-workshop/releases/tag/v8-2026-11-25">firmware v8</a> (this build without the transmit expansion).</p>
     <ul class="fw-notes">
-      <li>Flash MAIN and DISPLAY together. The DISPLAY file is unchanged from v8.</li>
+      <li>Flash MAIN and DISPLAY together. The DISPLAY file is unchanged from v8 and v9; if v8 or v9 is already on the radio, only MAIN needs updating.</li>
       <li>Keep the exact file names <code>FTX-1_MAIN_V0113.SFL</code> and <code>FTX-1_DISPLAY_V0110.SFL</code>.</li>
       <li>See <a href="#how-to-load">How to load firmware</a> for the step-by-step with pictures.</li>
-      <li>Before you go back to v7 or to stock firmware, set SSB/CW DIAL STEP to 5, 10 or 20 Hz, MAIN STEPS PER REV to 50, 100 or 200, and FINE/FAST KEY to NORMAL. Older firmware misreads the new settings. Going back to v8 does not require a settings reset.</li>
+      <li>Before you go back to v7 or to stock firmware, set SSB/CW DIAL STEP to 5, 10 or 20 Hz, MAIN STEPS PER REV to 50, 100 or 200, and FINE/FAST KEY to NORMAL. Older firmware misreads the new settings. Going back to v8 or v9 does not require a settings reset.</li>
       <li>Before the first key-down in the new 28–75 MHz range, read the 70 MHz alignment values (and the 50 MHz ones for comparison) and change nothing. If the 70 MHz values are blank, zero, or very different from 50 MHz, do not transmit at 60–75 MHz. Start at minimum power (0.5 W on the Field, 5 W on an SPA-1) into a 50-ohm dummy load with a wattmeter and a spectrum analyser, use short CW or FM key-downs, and only then raise power.</li>
     </ul>
-    <p class="fw-risk"><strong>Experimental, use at your own risk.</strong> This is custom firmware, not a Yaesu release. v9 has been tested in the emulator only and has not been confirmed on a radio.</p>
+    <p class="fw-risk"><strong>Experimental, use at your own risk.</strong> This is custom firmware, not a Yaesu release. v10 transmit from 30 to 75 MHz has been tested on air by WG3U.</p>
   </div>
   <h2>Drop your files and press build</h2>
 
@@ -527,9 +527,10 @@ certutil -hashfile FTX-1_DISPLAY_V0110.SFL SHA256</pre>
 
   <div class="cat" data-cat="txrange"><h3><i>📡</i>TX range</h3>
     <div class="cards wide">
-    <article class="mod"><div class="mh"><b>Transmit 28–75 MHz (10 m through 74.999999 MHz)</b><span class="badge b-exp">new</span><span class="where">MAIN · band table &nbsp;<span class="badge b-legal">licence-dependent</span></span></div><div class="more">
+    <article class="mod"><div class="mh"><b>Transmit 28–75 MHz (10 m through 74.999999 MHz)</b><span class="badge b-ok">tested on air</span><span class="where">MAIN · band table &nbsp;<span class="badge b-legal">licence-dependent</span></span></div><div class="more">
       <p>On US radios, one edge in the transmit-allow table is moved so the radio can transmit continuously from 28.000000 MHz to 74.999999 MHz. 75.000000 MHz stays blocked, so the radio does not switch to the VHF filter path. HF below 28 MHz, VHF, UHF, and the tables for other regions are unchanged from v8.</p>
-      <p>The Field unit's top TX low-pass filter is designed for 30.1–70.5 MHz (Yaesu Technical Supplement EH084M90A). There is no exciter band-pass filter for 56–70 MHz; 56–75 MHz uses the BPF labelled 70–75 MHz. From 60–75 MHz the radio uses the 70 MHz calibration set, which Yaesu's alignment procedure marks UK-only, so on a US radio the power may be low, wrong, or absent. The internal tuner is specified only for HF (1.8–29.7 MHz) and 6 m; use a resonant antenna with the tuner off above 54 MHz. SPA-1 behaviour above 54 MHz is unknown.</p>
+      <p><b>v10:</b> also opens the MARS (USA_MC) region list, which MARS-unlocked US radios use, to 1.8–74.999999 MHz. On v9 those radios keyed only on 6 m and 70.0–70.5 MHz; the frequency turned red but the TX relay never engaged elsewhere. Tested on air by WG3U with v10 from 30 to 75 MHz. SQ9PD's newer release adds a similar MARS MOD; this build is based on his V40.</p>
+      <p>The Field unit's top TX low-pass filter is designed for 30.1–70.5 MHz (Yaesu Technical Supplement EH084M90A). There is no exciter band-pass filter for 56–70 MHz; 56–75 MHz uses the BPF labelled 70–75 MHz. From 60–75 MHz the radio uses the 70 MHz calibration set, which Yaesu's alignment procedure marks UK-only, so on a US radio the power may be low, wrong, or absent. Above about 70.5 MHz harmonics are less filtered. The internal tuner is specified only for HF (1.8–29.7 MHz) and 6 m; use a resonant antenna with the tuner off above 54 MHz. SPA-1 behaviour above 54 MHz is unknown.</p>
       <p>SWR SCAN presets that sit near the top of 10 m or either edge of 6 m now start and transmit the scan carrier, instead of being refused as they were on v8. BAND-mode scans still stay inside the band.</p>
       <p>Before the first key-down, read the 70 MHz alignment values (and the 50 MHz ones for comparison) and change nothing. If the 70 MHz values are blank, zero, or very different from 50 MHz, do not transmit at 60–75 MHz. Start at minimum power (0.5 W on the Field, 5 W on an SPA-1) into a 50-ohm dummy load with a wattmeter and a spectrum analyser, use short CW or FM key-downs, and only then raise power. Most of 29.7–75 MHz is not US amateur spectrum — only 50–54 MHz is, and the US has no 4 m band. Transmitting elsewhere in that range needs MARS, CAP, or other authorization.</p>
     </div></article>
