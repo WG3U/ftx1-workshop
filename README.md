@@ -4,7 +4,7 @@
 
 **Author: WG3U**
 
-A single-page, browser-only patcher for the Yaesu FTX-1 field head. You load your own original Yaesu **MAIN 01-13** and **DISPLAY 01-10** firmware files. The page checks them, applies the latest WG3U extended build (v10, 25 November 2026), and gives you the two finished `.SFL` files to copy into the `FTX-1` folder on the radio's microSD card. A ZIP bundle with a README is offered as an option.
+A single-page, browser-only patcher for the Yaesu FTX-1 field head. You load your own original Yaesu **MAIN 01-13** and **DISPLAY 01-10** firmware files. The page checks them, applies the latest WG3U extended build (v11, 25 November 2026), and gives you the two finished `.SFL` files to copy into the `FTX-1` folder on the radio's microSD card. A ZIP bundle with a README is offered as an option.
 
 ## Credit: SQ9PD
 
@@ -22,13 +22,13 @@ WG3U's additions are the extended TX ranges, 10 W on the internal battery, the 5
 - This repository does **not** host any Yaesu firmware, original or patched. The page carries only the changed bytes (each with the original value it expects) plus the added code (new MAIN S-records and a DISPLAY appendix), compressed. You must supply Yaesu's files yourself.
 - The output is accepted only if its SHA-256 exactly matches the reference build below. Otherwise the download stays disabled.
 
-## Expected hashes (SHA-256), v10
+## Expected hashes (SHA-256), v11
 
 The page delivers firmware only through the patcher; it offers no direct `.SFL` downloads.
 
 | File | Original (input) | Patched (output) | Output tag CRC |
 |---|---|---|---|
-| `FTX-1_MAIN_V0113.SFL` | `de02ce415b37ca6621ed0bac2f8e7bd63d45f3022a62868598950502ed033f5c` | `6703c9f8daf00bf8a90e53f2fd02d38e4afa44435a67184f0483417caab2041f` | `F9644370` |
+| `FTX-1_MAIN_V0113.SFL` | `de02ce415b37ca6621ed0bac2f8e7bd63d45f3022a62868598950502ed033f5c` | `83969bd6ed010108fdf72049d70065b2e0a616d62fa648af2bd18d91969db324` | `CDFD6543` |
 | `FTX-1_DISPLAY_V0110.SFL` | `962fda27ae2f0a0deedb039b868a545ef0f6736b686c266e19f231dbe3973bba` | `b0ddec36f002a9d86d7971716c850ff5ae93bbb9f5778f444a35d5e583c94e39` | `BC14B8E3` |
 
 ## Warnings
